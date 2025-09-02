@@ -1,41 +1,60 @@
+// ===== Alla using måste ligga överst i filen =====
+using Backend.Data;                    // vår AppDbContext
+using Microsoft.EntityFrameworkCore;   // UseSqlServer
+using Microsoft.OpenApi.Models;        // Swagger info
+using Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// -------------------------------------------------------------
+// OpenAPI/Swagger (så du kan testa API:et i webben)
+// -------------------------------------------------------------
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CodePlay API", Version = "v1" });
+});
 
+// -------------------------------------------------------------
+// EF Core: koppla in SQL Server/LocalDB via appsettings.json
+// -------------------------------------------------------------
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// (AuthController)
+builder.Services.AddControllers();
+// JWT-konfiguration: berättar hur vi ska läsa/validera tokens
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,     
+            ValidateAudience = false,   
+            ValidateLifetime = true,  
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)) 
+        };
+    });
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// -------------------------------------------------------------
+// Middleware-pipeline
+// -------------------------------------------------------------
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// (JWT kommer senare)
+// app.UseAuthentication();
+// app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
