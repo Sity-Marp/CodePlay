@@ -1,5 +1,5 @@
-// ===== Alla using måste ligga överst i filen =====
-using Backend.Data;                    // vår AppDbContext
+// ===== Alla using mï¿½ste ligga ï¿½verst i filen =====
+using Backend.Data;                    // vï¿½r AppDbContext
 using Microsoft.EntityFrameworkCore;   // UseSqlServer
 using Microsoft.OpenApi.Models;        // Swagger info
 using Backend.Services;
@@ -10,7 +10,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // -------------------------------------------------------------
-// OpenAPI/Swagger (så du kan testa API:et i webben)
+// OpenAPI/Swagger (sï¿½ du kan testa API:et i webben)
 // -------------------------------------------------------------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -25,9 +25,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// (AuthController)
+//controllers
 builder.Services.AddControllers();
-// JWT-konfiguration: berättar hur vi ska läsa/validera tokens
+
+// JWT-konfiguration: berï¿½ttar hur vi ska lï¿½sa/validera tokens
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -53,8 +54,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 // (JWT kommer senare)
 // app.UseAuthentication();
 // app.UseAuthorization();
 
+app.Run();
