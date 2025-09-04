@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer'
 
-function login (){
+function Login (){
     return (
         <div>
         <h1>Login</h1>
@@ -8,4 +8,4 @@ function login (){
         </div>
     )
 }
-export default login();
+export default Login();
