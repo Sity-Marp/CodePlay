@@ -11,7 +11,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} /> {/* Startsida - utloggad användare */}
-        <Route path="/login" element={<login />} /> {/* loginsida */}
       </Routes>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./Home.css";
 
-//TEMPORÄR KOD FÖR ATT TESTA KOMPONENTER, VÅGAR INTE PUSHA MIN BUGGADE KOD ÄN
+//TEMPORÄR KOD, VÅGAR INTE PUSHA ÄN DÅ DEN ÄR BUGGAD
 export default function Home() {
   return (
     <>
