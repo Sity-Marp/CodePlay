@@ -1,0 +1,92 @@
+/* === Sidlayout === */
+.home {
+  min-height: calc(100vh - 72px);           /* hel viewport minus navbar/footer */
+  display: grid;
+  place-items: start center;                /* top-centered */
+  padding: 24px 16px;
+}
+
+/* === KORTET === */
+.home-card {
+  /* light blue panel at ~80% opacity (CC alpha) */
+  background: #c3ebffcc;
+  border-radius: 15px;                      
+  width: clamp(320px, 90vw, 130rem);        /* responsiv bredd: minst 320, helst 90% & max 130 rem */
+  height: 55rem;
+  padding: clamp(20px, 4vw, 32px);
+  text-align: center;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: saturate(1.05);
+  margin: 32px 0 16px;                      
+}
+
+/* RUBRIK */
+.home-title {
+  margin: 0 20 12px;
+  color: #4368e4;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  font-size: clamp(20px, 15vw, 100px);
+
+  /* lite skugg styling för text */
+  text-shadow:
+    0 0 6px rgba(67, 104, 228, 0.35),
+    0 0 12px rgba(67, 104, 228, 0.25);
+}
+
+/* astonaut bilden */
+.home-astro {
+  width: clamp(84px, 18vw, 140px);
+  height: auto;
+  margin: 10px auto 10rem;
+  user-select: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
+}
+
+/* knapparnas container */
+.home-actions {
+  display: grid;
+  grid-auto-flow: column;
+  gap: clamp(12px, 3vw, 40px);
+  justify-content: center;
+}
+
+/* grundstil för knappar */
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 10px;
+  padding: 12px 18px;
+  min-width: 250px;
+  height: 30px;                /* wide buttons like mockup */
+  text-align: center;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.btn-primary {
+  background: #4368e4;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+}
+
+/* hover & focus på knapparna */
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 28px rgba(67, 104, 228, 0.42);
+}
+
+/* när man klickar på knapparna */
+.btn-primary:active {
+  transform: translateY(0); 
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+}
+
+
+
+
