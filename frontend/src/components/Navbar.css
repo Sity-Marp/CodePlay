@@ -1,0 +1,19 @@
+.navbar {
+  position: sticky; /* navbar sitter fast längst upp */
+  top: 0;
+  z-index: 1000; /* ligger över allt innehåll */
+  background: #c3ebff;
+}
+
+.navbar-inner {
+  margin: 0 auto;
+  padding: 1px;
+  display: flex;
+  align-items: center; /* centrera vertikalt */
+}
+
+.navbar-logo img {
+  height: 80px;
+  width: auto; 
+  display: block;
+}

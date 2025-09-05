@@ -1,0 +1,5 @@
+.background-fixed {
+  position: fixed;
+  inset: 0;            /* fyller hela skärmen */
+  z-index: -1;         /*  ligger bakom allt innehåll */
+}

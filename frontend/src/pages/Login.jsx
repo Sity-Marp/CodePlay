@@ -7,6 +7,5 @@ function login() {
       <Footer />
     </div>
   );
-  //test
 }
 export default login();
