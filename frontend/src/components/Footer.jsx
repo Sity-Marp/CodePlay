@@ -1,4 +1,4 @@
-function footer() {
+function Footer() {
     return (
         <div className="footer">
 
@@ -8,4 +8,4 @@ function footer() {
         </div>
     );
 };
-export default footer;
+export default Footer;

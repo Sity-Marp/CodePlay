@@ -1,11 +1,11 @@
-import Footer from '@/components/Footer'
+import Footer from "../components/Footer";
 
-function Login (){
-    return (
-        <div>
-        <h1>Login</h1>
-        <Footer />
-        </div>
-    )
-}
-export default Login();
+export default function Login() {
+  return (
+    <div className="login-page">
+      <h1>Login Page</h1>
+      {/* Add your login form or content here */}
+      <Footer />
+    </div>
+  );
+}   
