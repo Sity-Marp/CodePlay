@@ -1,0 +1,175 @@
+/* === Sidlayout (samma tänk som Home) === */
+.dashboard {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: start center;
+  padding: 24px 16px;
+}
+
+/* === Kortet i mitten === */
+.db-card {
+  background: #c3ebffcc;
+  border-radius: 15px;
+  width: clamp(320px, 90vw, 130rem);
+  height: 55rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: saturate(1.05);
+  margin: 32px 0 16px;
+  padding: clamp(20px, 4vw, 32px);
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;  /* topp / mitten / botten i mobilläge */
+  grid-template-columns: 1fr;         /* en kolumn i mobilläge */
+  gap: clamp(12px, 2vw, 20px);
+  position: relative;
+  text-align: center;
+}
+
+/* Överst: titeln */
+.db-title {
+  margin: 0;
+  color: #4368e4;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  font-size: clamp(20px, 15vw, 100px);
+  text-shadow:
+    0 0 6px rgba(67, 104, 228, 0.35),
+    0 0 12px rgba(67, 104, 228, 0.25);
+}
+
+/* Mitten: intro (centrerad och lite större) */
+.db-intro {
+  margin: 0 auto;
+  max-width: 60ch;
+  color: #153753;
+  font-size: clamp(16px, 3vw, 25px);
+  line-height: 1.6;
+  padding-inline: 8px;
+  text-align: center;        /* centrera texten */
+  align-self: start;         /* lägg nära toppen av mitten-raden */
+}
+
+/* Primär-CTA under introt (centrerad) */
+.db-cta {
+  margin: 12px 0 0;
+  display: flex;
+  justify-content: center;
+}
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.btn-start {
+  background: #4368e4;
+  color: #ffffff;
+  padding: 14px 22px;
+  min-width: 240px;
+  font-size: clamp(16px, 2.4vw, 20px);
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+}
+.btn-start:hover,
+.btn-start:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 28px rgba(67, 104, 228, 0.42);
+}
+.btn-start:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+}
+
+/* Astronaut (lite åt vänster på desktop) */
+.db-right {
+  display: grid;
+  place-items: center;
+  margin-top: clamp(10px, 2vw, 16px);
+}
+.db-astro {
+  width: clamp(120px, 22vw, 220px);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
+  user-select: none;
+}
+
+/* Nederst: runda ikon-knappar */
+.db-actions {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 28px);
+  padding-top: 8px;
+}
+.db-action {
+  display: grid;
+  place-items: center;
+  width: clamp(70px, 20vw, 100px);
+  height: clamp(70px, 20vw, 100px);
+  border-radius: 50%;
+  background: #e6f0ff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  text-decoration: none;
+}
+.db-action:hover,
+.db-action:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+}
+.db-action img {
+  width: 60%;
+  height: auto;
+  display: block;
+}
+
+/* Footer under kortet (valfritt) */
+.db-footer {
+  color: #cde4f6;
+  opacity: 0.85;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 6px 8px 10px;
+  user-select: none;
+}
+
+/* === Desktop-layout: två kolumner i mitten-raden,
+      intro + start-knapp över båda kolumnerna (centrerade) === */
+@media (min-width: 900px) {
+  .db-card {
+    grid-template-rows: auto auto 1fr auto; /* titel / intro+knapp / astro / ikoner */
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .db-title { grid-column: 1 / -1; }  /* titel över båda kolumnerna */
+
+  .db-intro {
+    grid-column: 1 / -1;              /* intro över båda */
+    justify-self: center;              /* centrera blocket */
+    text-align: center;
+  }
+
+  .db-cta {
+    grid-column: 1 / -1;              /* knapp över båda */
+    justify-self: center;
+  }
+
+  .db-right {
+    grid-column: 2 / 3;               /* astronaut i högerkolumn */
+    align-self: center;
+    justify-self: end;
+  }
+  .db-astro {
+    transform: translateX(-8px);       /* flytta lite åt vänster */
+  }
+
+  .db-actions {
+    grid-column: 1 / -1;               /* ikoner över hela bredden längst ned */
+  }
+}
