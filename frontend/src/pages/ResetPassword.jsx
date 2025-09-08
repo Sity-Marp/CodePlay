@@ -15,7 +15,8 @@ export default function ResetPassword() {
 
         <span>Bekräfta lösenord</span>
         <input type="password"required />
-        <button type="submit">Återställ</button>
+        <Link to="/login" className="btn-reset">
+        Återställ</Link>
       </form>
       
       </div>

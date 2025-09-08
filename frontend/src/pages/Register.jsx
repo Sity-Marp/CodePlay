@@ -16,7 +16,7 @@ export default function Register() {
 
         <span>Lösenord</span>
         <input type="password" required />
-        <button type="submit">Registrera</button>
+        <Link to="/login" className="btn-register">Registrera</Link>
       </form>
       
       </div>
