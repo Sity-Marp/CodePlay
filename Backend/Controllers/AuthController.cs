@@ -69,10 +69,9 @@ namespace Backend.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+     //Login
 
-
-        //Login
-        [AllowAnonymous]
+[AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
@@ -88,15 +87,14 @@ namespace Backend.Controllers
                 (!string.IsNullOrWhiteSpace(dto.Username) && u.Username == dto.Username) ||
                 (!string.IsNullOrWhiteSpace(dto.Email) && u.Email == dto.Email));
 
-            // Verifiera lösenord 
+            // Verifiera lösenord (samma hash som vid registrering)
             var hashed = HashPassword(dto.Password);
             if (user == null || user.PasswordHash != hashed)
             {
-                
+               
                 return Unauthorized(new { message = "Invalid credentials" });
             }
 
-            
 
             return Ok(new
             {
@@ -104,9 +102,7 @@ namespace Backend.Controllers
                 userId = user.Id,
                 username = user.Username,
                 email = user.Email
-                
+               
             });
         }
-
-    }
-}
+    } }
