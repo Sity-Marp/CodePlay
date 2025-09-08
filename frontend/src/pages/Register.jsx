@@ -9,10 +9,10 @@ export default function Register() {
       <form className="register-form">
         
         <span>Användarnamn</span>
-        <input type="text" required />
+        <input type="text"/>
 
         <span>E-post</span>
-        <input type="password"required />
+        <input type="password" />
 
         <span>Lösenord</span>
         <input type="password" required />
