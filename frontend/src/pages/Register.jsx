@@ -36,6 +36,7 @@ export default function Register() {
   return (
     <div className="register-page">
       <div className="register-card">
+
         <form className="register-form" onSubmit={handleSubmit}>
           <span>Användarnamn</span>
           <input
@@ -65,6 +66,7 @@ export default function Register() {
         </form>
 
         {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
+
       </div>
     </div>
   );

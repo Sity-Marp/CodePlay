@@ -8,14 +8,18 @@ export default function Login() {
       <form className="login-form">
         
         <span>E-post/Användarnamn</span>
-        <input type="text" required />
+        <input type="text" />
 
         <span>Lösenord</span>
         <input type="password"required />
 
-        <button type="submit">Logga in</button>
+        <Link to ="/dashboard" className="btn-login">
+        Logga in
+        </Link>
 
-        <p>Glömt lösenord</p>
+        <Link to ="/reset-password" className="btn-reset-password">
+        Glömt lösenord
+        </Link>
       </form>
       
       </div>

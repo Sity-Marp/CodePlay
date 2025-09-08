@@ -8,14 +8,15 @@ export default function ResetPassword() {
       <form className="reset-password-form">
         
         <span>E-post/Användarnamn</span>
-        <input type="text" required />
+        <input type="text"/>
 
         <span>Nytt lösenord</span>
-        <input type="password"required />
+        <input type="password"/>
 
         <span>Bekräfta lösenord</span>
-        <input type="password"required />
-        <button type="submit">Återställ</button>
+        <input type="password"/>
+        <Link to="/login" className="btn-reset">
+        Återställ</Link>
       </form>
       
       </div>
