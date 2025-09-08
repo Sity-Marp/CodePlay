@@ -4,8 +4,21 @@ import "./Login.css";
 export default function Login() {
   return (
     <div className="login-page">
-      <h1>Login Page</h1>
-      {/* Add your login form or content here */}
+      <div className="login-card">
+      <form className="login-form">
+        
+        <span>E-post/Användarnamn</span>
+        <input type="text" required />
+
+        <span>Lösenord</span>
+        <input type="password"required />
+
+        <button type="submit">Logga in</button>
+
+        <p>Glömt lösenord</p>
+      </form>
+      
+      </div>
     </div>
   );
 }
