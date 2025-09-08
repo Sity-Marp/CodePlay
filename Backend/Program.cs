@@ -28,6 +28,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //controllers
 builder.Services.AddControllers();
 
+//cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+        policy.WithOrigins("http://localhost:3000") // React-dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
 // JWT-konfiguration: ber�ttar hur vi ska l�sa/validera tokens
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -54,6 +63,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowReactApp");
 app.MapControllers();
 
 // (JWT kommer senare)
