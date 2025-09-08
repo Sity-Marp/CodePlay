@@ -13,9 +13,13 @@ export default function Login() {
         <span>Lösenord</span>
         <input type="password"required />
 
-        <button type="submit">Logga in</button>
+        <Link to ="/dashboard" className="btn-login">
+        Logga in
+        </Link>
 
-        <p>Glömt lösenord</p>
+        <Link to ="/reset-password" className="btn-reset-password">
+        Glömt lösenord
+        </Link>
       </form>
       
       </div>
