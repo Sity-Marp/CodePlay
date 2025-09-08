@@ -78,7 +78,7 @@ namespace Backend.Controllers
             if ((string.IsNullOrWhiteSpace(dto.Username) && string.IsNullOrWhiteSpace(dto.Email)) ||
                 string.IsNullOrWhiteSpace(dto.Password))
             {
-                return BadRequest(new { message = "Username or Email and Password are required" });
+                return BadRequest(new { message = "Username/Email är inte giltiga" });
             }
 
             // Hitta användare via username ELLER email
@@ -91,7 +91,7 @@ namespace Backend.Controllers
             if (user == null || user.PasswordHash != hashed)
             {
 
-                return Unauthorized(new { message = "Invalid credentials" });
+                return Unauthorized(new { message = "Ogiltigta värden" });
             }
 
 
