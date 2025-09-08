@@ -8,7 +8,7 @@ export default function Login() {
       <form className="login-form">
         
         <span>E-post/Användarnamn</span>
-        <input type="text" required />
+        <input type="text" />
 
         <span>Lösenord</span>
         <input type="password"required />
