@@ -1,5 +1,7 @@
 using Backend.Data;
+using Backend.DTOs;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -67,5 +69,44 @@ namespace Backend.Controllers
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+
+
+        //Login
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        {
+            // Minsta krav: minst ett av Username/Email + Password
+            if ((string.IsNullOrWhiteSpace(dto.Username) && string.IsNullOrWhiteSpace(dto.Email)) ||
+                string.IsNullOrWhiteSpace(dto.Password))
+            {
+                return BadRequest(new { message = "Username or Email and Password are required" });
+            }
+
+            // Hitta användare via username ELLER email
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                (!string.IsNullOrWhiteSpace(dto.Username) && u.Username == dto.Username) ||
+                (!string.IsNullOrWhiteSpace(dto.Email) && u.Email == dto.Email));
+
+            // Verifiera lösenord 
+            var hashed = HashPassword(dto.Password);
+            if (user == null || user.PasswordHash != hashed)
+            {
+                
+                return Unauthorized(new { message = "Invalid credentials" });
+            }
+
+            
+
+            return Ok(new
+            {
+                message = "Login ok",
+                userId = user.Id,
+                username = user.Username,
+                email = user.Email
+                
+            });
+        }
+
     }
 }
