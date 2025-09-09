@@ -8,6 +8,7 @@
         public int QuestionId { get; set; } //Foreign key to Question
         public bool IsCorrect { get; set; } //Om svaret var korrekt eller inte
         public string SelectedOption { get; set; } //Det valda svaret
+        public int AnswerOptionId { get; set; } //Foreign key to AnswerOption
         public DateTime AnsweredAt { get; set; } = DateTime.UtcNow;
 
         public User User { get; set; } //Navigation property to User
