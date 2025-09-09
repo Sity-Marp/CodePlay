@@ -104,5 +104,42 @@ namespace Backend.Controllers
 
             });
         }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            // Validering av input
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.NewPassword))
+                return BadRequest(new { message = "Skriv in email och lösenord" });
+
+            // Validera email format
+            if (!EmailRegex.IsMatch(request.Email))
+                return BadRequest(new { message = "Inkorrekt email format" });
+
+            // Validera nya lösenordet
+            var passwordValidation = ValidateNewPassword(request.NewPassword);
+            if (passwordValidation != null)
+                return BadRequest(new { message = passwordValidation });
+
+            // Hitta användare med email
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (user == null)
+                return BadRequest(new { message = "Ingen användare hittades med den email adressen" });
+
+            // Uppdatera lösenord
+            user.PasswordHash = HashPassword(request.NewPassword);
+            
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Lösenordet har uppdateras" });
+        }
+
+        // Hjälpmetod för att validera nya lösenordet
+        private string ValidateNewPassword(string password)
+        {
+            return password.Length < 8 || password.Length > 24 ? "Lösenordet måste vara mellan 8-24 karaktärer" :
+                !PasswordRegex.IsMatch(password) ? "Lösenordet ska innehålla: stora och små bokstäver, minst en siffra samt ett specialtecken." :
+                null;
+        }
     }
-    }
+}
