@@ -1,12 +1,12 @@
 
 using Backend.Data;                    // vår AppDbContext
 using Microsoft.EntityFrameworkCore;   // UseSqlServer
-using Microsoft.OpenApi.Models;        // Swagger info
+using Microsoft.OpenApi.Models;        
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -28,8 +28,13 @@ builder.Services.AddScoped<PlayService>();
 
 
 //controllers
-builder.Services.AddControllers();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        // Gör att enums serialiseras som STRÄNGAR ("HTML") i stället för heltal (0)
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 //cors
 builder.Services.AddCors(options =>
 {
