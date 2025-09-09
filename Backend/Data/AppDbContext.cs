@@ -75,6 +75,8 @@ namespace Backend.Data
                 entity.Property(e => e.SelectedOption)
                       .IsRequired()
                       .HasMaxLength(500);
+                entity.Property(e => e.AnswerOptionId).IsRequired();
+
 
                 entity.Property(e => e.AnsweredAt)
                       .IsRequired()
