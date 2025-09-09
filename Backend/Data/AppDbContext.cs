@@ -12,6 +12,10 @@ namespace Backend.Data
         public DbSet<UserProgress> UserProgresses { get; set; }
         public DbSet<UserAnswer> UserAnswers { get; set; }
 
+        public DbSet<Quiz> Quizzes { get; set; }             
+        public DbSet<Question> Questions { get; set; }        
+        public DbSet<AnswerOption> AnswerOptions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -83,6 +87,73 @@ namespace Backend.Data
 
                 entity.HasIndex(e => new { e.UserId, e.QuestionId });
             });
+
+            // ===== Quiz =====
+            modelBuilder.Entity<Quiz>(entity =>
+            {
+                entity.HasKey(q => q.Id);
+
+                entity.Property(q => q.Title)
+                      .IsRequired()
+                      .HasMaxLength(250); 
+
+                entity.Property(q => q.Track)
+                      .IsRequired();
+
+                entity.Property(q => q.LevelNumber)
+                      .IsRequired();
+
+                entity.Property(q => q.PassingScore)
+                      .HasDefaultValue(0);
+
+                // (Val en quiz per Track+Level)  undviker dubletter
+                entity.HasIndex(q => new { q.Track, q.LevelNumber }).IsUnique();
+                
+            });
+
+            // ===== Question =====
+            modelBuilder.Entity<Question>(entity =>
+            {
+                entity.HasKey(q => q.Id);
+
+                entity.Property(q => q.Text)
+                      .IsRequired()
+                      .HasMaxLength(1000);
+
+                entity.Property(q => q.Order)
+                      .IsRequired()
+                      .HasDefaultValue(1); // starta på 1
+
+                entity.HasOne(q => q.Quiz)
+                      .WithMany(z => z.Questions)
+                      .HasForeignKey(q => q.QuizId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Unik ordning per quiz
+                entity.HasIndex(q => new { q.QuizId, q.Order }).IsUnique();
+            });
+
+            // ===== AnswerOption =====
+            modelBuilder.Entity<AnswerOption>(entity =>
+            {
+                entity.HasKey(o => o.Id);
+
+                entity.Property(o => o.Text)
+                      .IsRequired()
+                      .HasMaxLength(500);
+
+                entity.Property(o => o.IsCorrect)
+                      .IsRequired();
+
+                entity.HasOne(o => o.Question)
+                      .WithMany(q => q.AnswerOptions)
+                      .HasForeignKey(o => o.QuestionId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(o => o.QuestionId);
+                
+            });
+
         }
     }
 }
