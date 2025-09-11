@@ -45,7 +45,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("AnswerOptions");
+                    b.ToTable("AnswerOptions", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Question", b =>
@@ -74,7 +74,7 @@ namespace Backend.Migrations
                     b.HasIndex("QuizId", "Order")
                         .IsUnique();
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Quiz", b =>
@@ -106,7 +106,7 @@ namespace Backend.Migrations
                     b.HasIndex("Track", "LevelNumber")
                         .IsUnique();
 
-                    b.ToTable("Quizzes");
+                    b.ToTable("Quizzes", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -139,7 +139,7 @@ namespace Backend.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.UserAnswer", b =>
@@ -173,7 +173,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserId", "QuestionId");
 
-                    b.ToTable("UserAnswers");
+                    b.ToTable("UserAnswers", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.UserProgress", b =>
@@ -215,7 +215,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "Track")
                         .IsUnique();
 
-                    b.ToTable("UserProgresses");
+                    b.ToTable("UserProgresses", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.AnswerOption", b =>
