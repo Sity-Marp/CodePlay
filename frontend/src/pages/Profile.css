@@ -1,0 +1,91 @@
+/* === Layout === */
+.profile {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: start center;
+  padding: 24px 16px;
+}
+
+/* === Kortet === */
+.profile-card {
+  background: #c3ebffcc;
+  border-radius: 15px;
+  width: clamp(320px, 90vw, 80rem);
+  height: 45rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: saturate(1.05);
+  margin: 32px 0 16px;
+  padding: 32px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* === Profilbild === */
+.profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* === Namn === */
+.profile-name {
+  margin: 0;
+  color: #4368e4;
+  font-weight: 800;
+  font-size: clamp(20px, 4vw, 28px);
+}
+
+/* === Planeter (nivå-knappar) === */
+.profile-levels {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.planet img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  transition: transform 120ms ease, filter 120ms ease;
+  cursor: pointer;
+}
+
+.planet:hover img {
+  transform: translateY(-4px) scale(1.05);
+  filter: brightness(1.1);
+}
+.planet.locked {
+  pointer-events: none;   
+}
+
+.planet.locked img {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+/* === Ändra-knapp === */
+.profile-actions {
+  margin-top: auto;
+}
+
+.btn-edit {
+  background: #4368e4;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  height: 35px;
+  width: clamp(0.02em, 30vw, 150px); 
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25); 
+}
+.btn-edit:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
