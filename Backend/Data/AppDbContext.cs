@@ -35,7 +35,7 @@ namespace Backend.Data
 
                 entity.Property(e => e.PasswordHash).IsRequired();
 
-                // Unikt användarnamn och email
+                // Unikt anvï¿½ndarnamn och email
                 entity.HasIndex(e => e.Username).IsUnique();
                 entity.HasIndex(e => e.Email).IsUnique();
             });
@@ -62,7 +62,7 @@ namespace Backend.Data
                       .HasForeignKey(e => e.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                // Unik per användare + spår
+                // Unik per anvï¿½ndare + spï¿½r
                 entity.HasIndex(e => new { e.UserId, e.Track }).IsUnique();
             });
 
@@ -75,6 +75,8 @@ namespace Backend.Data
                 entity.Property(e => e.SelectedOption)
                       .IsRequired()
                       .HasMaxLength(500);
+                entity.Property(e => e.AnswerOptionId).IsRequired();
+
 
                 entity.Property(e => e.AnsweredAt)
                       .IsRequired()
@@ -122,7 +124,7 @@ namespace Backend.Data
 
                 entity.Property(q => q.Order)
                       .IsRequired()
-                      .HasDefaultValue(1); // starta på 1
+                      .HasDefaultValue(1); // starta pï¿½ 1
 
                 entity.HasOne(q => q.Quiz)
                       .WithMany(z => z.Questions)
@@ -153,7 +155,8 @@ namespace Backend.Data
                 entity.HasIndex(o => o.QuestionId);
                 
             });
-
+            //seed data from DataSeeder.cs
+            DataSeeder.SeedData(modelBuilder);
         }
     }
 }
