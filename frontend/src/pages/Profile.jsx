@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./Profile.css";
 
 export default function Profile() {
+  const username = localStorage.getItem("username") || "Gäst"; //hämta användarnamn från localStorage eller sätt till "Gäst" om inte inloggad
   return (
     <main className="profile">
       <section className="profile-card" role="region" aria-label="Profil">
@@ -14,7 +15,7 @@ export default function Profile() {
         />
 
         {/* Användarnamn */}
-        <h2 className="profile-name">John Snow</h2>
+        <h2 className="profile-name">{username}</h2>
 
         {/* Planeter som nivå-knappar! */}
         <div className="profile-levels">
