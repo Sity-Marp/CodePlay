@@ -25,13 +25,24 @@ export default function Login() {
       const text = await res.text();
       const data = text ? JSON.parse(text) : {};
 
-      if (res.ok) {
-        if (data.token) localStorage.setItem("token", data.token);
-        setMessage("Inloggning lyckades!");
-        navigate("/dashboard");
-      } else {
-        setMessage(data.message || `Inloggning misslyckades (HTTP ${res.status})`);
-      }
+ if (res.ok) {
+   // spara token om den finns
+   if (data.token) {
+     localStorage.setItem("token", data.token);
+   }
+   // spara username om backend skickar det
+   if (data.username) {
+     localStorage.setItem("username", data.username);
+   } else {
+     // fallback: spara det användaren skrev (identifier)
+     localStorage.setItem("username", identifier);
+   }
+
+   setMessage("Inloggning lyckades!");
+   navigate("/dashboard");
+ } else {
+   setMessage(data.message || `Inloggning misslyckades (HTTP ${res.status})`);
+ }
     } catch (err) {
       setMessage("Fel vid anslutning till backend: " + err.message);
     } finally {
