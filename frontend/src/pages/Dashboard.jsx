@@ -20,7 +20,7 @@ export default function Dashboard() {
 
         {/* Primär-CTA precis under introt */}
         <div className="db-cta">
-          <Link to="/levels" className="btn btn-start">
+          <Link to="/Teori" className="btn btn-start">
             Starta
           </Link>
           {/* TODO/PLACEHOLDER:
@@ -38,7 +38,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Nederst: runda ikon-knappar */}
+        {/* Nederst:  ikon-knappar */}
         <nav className="db-actions" aria-label="Snabblänkar">
           <Link
             to="/profile"

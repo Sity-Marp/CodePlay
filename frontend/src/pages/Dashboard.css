@@ -10,8 +10,10 @@
 .db-card {
   background: #c3ebffcc;
   border-radius: 15px;
-  width: clamp(320px, 90vw, 130rem);
-  height: 55rem;
+  width: clamp(220px,
+    80vw,
+    80rem);
+  height: 40rem;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
   backdrop-filter: saturate(1.05);
   margin: 32px 0 16px;
@@ -27,15 +29,16 @@
 
 /* Överst: titeln */
 .db-title {
-  margin: 0;
+margin: 0 20 12px;
   color: #4368e4;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   line-height: 1.15;
-  font-size: clamp(20px, 15vw, 100px);
-  text-shadow:
-    0 0 6px rgba(67, 104, 228, 0.35),
+  font-size: clamp(20px, 10vw, 60px);
+
+  /* lite skugg styling för text */
+  text-shadow: 0 0 6px rgba(67, 104, 228, 0.35),
     0 0 12px rgba(67, 104, 228, 0.25);
 }
 
@@ -67,6 +70,7 @@
   transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
 }
 .btn-start {
+  margin-top: 30px;
   background: #4368e4;
   color: #ffffff;
   padding: 14px 22px;
@@ -92,14 +96,16 @@
   margin-top: clamp(10px, 2vw, 16px);
 }
 .db-astro {
-  width: clamp(120px, 22vw, 220px);
+  width: clamp(90px, 20vw, 190px);
   height: auto;
+  margin-top: -100px;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
   user-select: none;
 }
 
 /* Nederst: runda ikon-knappar */
 .db-actions {
+  margin-top: -8rem;
   display: grid;
   grid-auto-flow: column;
   justify-content: center;
@@ -109,8 +115,8 @@
 .db-action {
   display: grid;
   place-items: center;
-  width: clamp(70px, 20vw, 100px);
-  height: clamp(70px, 20vw, 100px);
+  width: clamp(50px, 10vw, 80px);
+  height: clamp(50px, 10vw, 80px);
   border-radius: 50%;
   background: #e6f0ff;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);

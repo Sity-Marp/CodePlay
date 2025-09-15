@@ -1,5 +1,6 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Backend.Content;
 using Microsoft.AspNetCore.Mvc;     
 using Microsoft.EntityFrameworkCore; 
 using System.Linq;                  
@@ -43,7 +44,7 @@ namespace Backend.Controllers
             {
                 quiz.Id,
                 quiz.Title,
-                quiz.Track,        // t.ex. "HTML", "CSS", "JS"
+                quiz.Track,        
                 quiz.LevelNumber,  // nivånumret inom tracken
                 quiz.PassingScore, // hur många rätt som krävs för att bli godkänd
                 Questions = quiz.Questions
@@ -101,7 +102,7 @@ namespace Backend.Controllers
 
         // 3) LISTA QUIZ FÖR EN SPECIFIK NIVÅ I ETT TRACK
         //    GET /api/quiz/ baserat på track + level
-        //    Bra när användaren har låst upp t.ex. level 2 och du vill hämta rätt quiz.
+        //    Bra när användaren har låst upp 
 
         [HttpGet("by-level")]
         public async Task<IActionResult> GetQuizzesByLevel([FromQuery] TrackType track, [FromQuery] int level)
@@ -125,6 +126,52 @@ namespace Backend.Controllers
                 .ToListAsync();
 
             return Ok(items);
+        }
+        // Hämta fakta för ett helt spår (HTML/CSS/JavaScript). 
+        [HttpGet("facts/by-track")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFactsByTrack([FromQuery] TrackType track, [FromQuery] int? level)
+        {
+            // 1) Hämta alla frågor som tillhör angivet track (och ev. nivå)
+            // Vi går via Quizzes för att slippa navigera från Question->Quiz och undvika null navs.
+            var quizQuery = _db.Quizzes
+                .Where(q => q.Track == track); 
+
+            if (level.HasValue)
+                quizQuery = quizQuery.Where(q => q.LevelNumber == level.Value);
+
+            var questions = await quizQuery
+                .SelectMany(q => q.Questions
+                    .Select(ques => new
+                    {
+                        q.Id,                    // QuizId
+                        q.LevelNumber,           // nivå
+                        QuestionId = ques.Id,    // frågans Id från seeden
+                        ques.Order               // ordning inom quizet
+                    }))
+                .OrderBy(x => x.LevelNumber)
+                .ThenBy(x => x.Order)
+                .ToListAsync();
+
+            // 2) Mappa fråge-Id -> fakta (via vår in-memory-karta QuestionFacts)
+            //    Vi tar bara med de som har fakta (skulle någon saknas blir den filtrerad bort).
+            var items = questions
+                .Where(x => QuestionFacts.Facts.ContainsKey(x.QuestionId))
+                .Select(x => new
+                {
+                    x.QuestionId,
+                    Fact = QuestionFacts.Facts[x.QuestionId]
+                })
+                .ToList();
+
+            // 3) Returnera ett enkelt, frontend-vänligt svar
+            return Ok(new
+            {
+                Track = track.ToString(),    
+                Level = level,               
+                Count = items.Count,
+                Items = items                
+            });
         }
     }
 }
