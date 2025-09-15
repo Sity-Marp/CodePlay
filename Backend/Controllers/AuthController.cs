@@ -110,31 +110,40 @@ namespace Backend.Controllers
         {
             // Validering av input
             if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.NewPassword))
-                return BadRequest(new { message = "Skriv in email och lösenord" });
+                return BadRequest(new { message = "Skriv in email/användarnamn och lösenord" });
 
-            // Validera email format
-            if (!EmailRegex.IsMatch(request.Email))
-                return BadRequest(new { message = "Inkorrekt email format" });
+            // Validera lösenord matchar confirmPassword
+            if (request.NewPassword != request.ConfirmPassword)
+                return BadRequest(new { message = "Lösenorden matchar inte" });
 
             // Validera nya lösenordet
             var passwordValidation = ValidateNewPassword(request.NewPassword);
             if (passwordValidation != null)
                 return BadRequest(new { message = passwordValidation });
 
-            // Hitta användare med email
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            // Kolla om input är email eller användarnamn
+            bool isEmail = EmailRegex.IsMatch(request.Email);
+            bool isUsername = UsernameRegex.IsMatch(request.Email);
+
+            if (!isEmail && !isUsername)
+                return BadRequest(new { message = "Ange ett korrekt email eller användarnamn" });
+
+            // Hitta användaren via email eller username
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                (isEmail && u.Email == request.Email) ||
+                (isUsername && u.Username == request.Email));
+
             if (user == null)
-                return BadRequest(new { message = "Ingen användare hittades med den email adressen" });
+                return BadRequest(new { message = "Ingen användare hittades med den angivna informationen" });
 
             // Uppdatera lösenord
             user.PasswordHash = HashPassword(request.NewPassword);
-            
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Lösenordet har uppdateras" });
+            return Ok(new { message = "Lösenordet har uppdaterats" });
         }
 
-        // Hjälpmetod för att validera nya lösenordet
+        // Hjälpmetod för att validera lösenordets styrka
         private string ValidateNewPassword(string password)
         {
             return password.Length < 8 || password.Length > 24 ? "Lösenordet måste vara mellan 8-24 karaktärer" :
