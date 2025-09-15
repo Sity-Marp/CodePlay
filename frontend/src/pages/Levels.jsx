@@ -16,28 +16,28 @@ export default function Levels() {
 
             </div>
 
-            <div className="planet css-planet">
+            <div className="planet css-planet locked">
                 <p className="name-planet"> CSS </p>
 
-                <Link to="/css" className="btn-css">
+                <Link to="/css" className="btn-css" aria-disabled="true">
                 <img src="/images/css.png" alt="CSS icon" className="planet-icon"/>
             </Link>
   
             </div>
 
-            <div className="planet javascript-planet">
+            <div className="planet javascript-planet locked">
                 <p className="name-planet"> JAVASCRIPT </p>
 
-                <Link to="/javascript" className="btn-javascript">
+                <Link to="/javascript" className="btn-javascript" aria-disabled="true">
                 <img src="/images/javascript.png" alt="JavaScript icon" className="planet-icon"/>
             </Link> 
 
             </div>
 
-            <div className="planet earth-planet">
+            <div className="planet earth-planet locked">
                 <p className="name-planet"> HTML, CSS & <br/> JavaScript  </p>
 
-                <Link to="/earth" className="btn-earth">
+                <Link to="/earth" className="btn-earth" aria-disabled="true">
                 <img src="/images/html-css-javascript.png" alt="Earth icon" className="planet-icon"/> 
             </Link>
             </div>
