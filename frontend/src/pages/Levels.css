@@ -1,4 +1,4 @@
-.level-planet{
+.levels-planet{
     position: relative;
     width: 100%;
     height: 100%;
@@ -11,6 +11,8 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    transform: translate(50%, 50%);
+    
 }
 
 .name-planet{
@@ -21,46 +23,49 @@
 }
 
 .planet-icon{
-    width: 180px;
+    width: 220px !important;
     border-radius: 50%;
 }
 
-.html-planet{
-    top: 14%;
+.html-planet{ 
+    top: 18%;
     left: 10%;
+    
 }
 
 .css-planet{
-    top: 35%;
-    left: 30%;
+    margin-top: 8%;
+    left: 28%;
 }
 
 .javascript-planet{
-    top: 58%;
-    left: 49%;
+    margin-top: 16%;
+    left: 48%;
     
 }
 
 .earth-planet{
-    top: 80%;
-    left: 82%;
+    margin-top: 22%;
+    left: 68%;
 }
 
 .levels-astro{
     position: absolute;
     top: 18%;
-    left: 15%;
-    width: 130px;
+    left: 23%;
+    width: 100px;
 }
 
 .levels-cb{
     position: absolute;
-    left: 14%;
-    bottom: 28%;
+    left: 16%;
+    bottom: 32%;
+    width: 250px;
 }
 
 .levels-rocket{
     position: absolute;
     left: 8%;
     bottom: 10%;
+    width: 220px;
 }
