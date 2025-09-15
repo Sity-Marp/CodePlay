@@ -1,5 +1,7 @@
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Backend.Data
 {
@@ -24,6 +26,23 @@ namespace Backend.Data
             };
 
             modelBuilder.Entity<Quiz>().HasData(quizzes);
+
+            // ===== SEEDING TEST USER =====
+            string HashPassword(string password)
+            {
+                using var sha256 = SHA256.Create();
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 100,
+                Username = "testuser",
+                Email = "testuser@example.com",
+                PasswordHash = HashPassword("testpassword")
+            });
+
 
             // ===== SEEDING QUESTIONS =====
             var questions = new[]
