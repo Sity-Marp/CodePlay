@@ -20,7 +20,7 @@ export default function Dashboard() {
 
         {/* Primär-CTA precis under introt */}
         <div className="db-cta">
-          <Link to="/level-1" className="btn btn-start">
+          <Link to="/levels" className="btn btn-start">
             Starta
           </Link>
           {/* TODO/PLACEHOLDER:
