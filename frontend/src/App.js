@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Fakta from "./pages/Fakta";
+import Quiz from "./pages/Quiz";
 
 import "./App.css";
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/fakta" element={<Fakta />} />
+        <Route path="/quiz" element={<Quiz />} />
       </Routes>
 
       <Footer />
