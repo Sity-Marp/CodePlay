@@ -9,7 +9,6 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import Levels from "./pages/Levels";
-
 import Profile from "./pages/Profile";
 import Fakta from "./pages/Fakta";
 
