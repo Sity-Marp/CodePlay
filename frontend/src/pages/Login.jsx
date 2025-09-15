@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
-export default function Login() {
+export default function Login({login}) {
   const [identifier, setIdentifier] = useState(""); 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -37,7 +37,7 @@ export default function Login() {
      // fallback: spara det användaren skrev (identifier)
      localStorage.setItem("username", identifier);
    }
-
+    login(identifier);
    setMessage("Inloggning lyckades!");
    navigate("/dashboard");
  } else {

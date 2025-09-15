@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Background from "./components/Background";
 import Footer from "./components/Footer";  
-
+import {useState} from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -17,14 +17,33 @@ import Quiz from "./pages/Quiz";
 import "./App.css";
 
 function App() {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("username");
+    return saved ? { name: saved } : null; // ger “inloggad” vid refresh om username finns
+  });
+
+  // Kallas av Login när inloggning lyckas
+  const login = (username) => {
+    setUser({ name: username });         // uppdatera UI direkt
+    localStorage.setItem("username", username); 
+  };
+
+  //  Kallas av Navbar när man klickar Logga ut
+  const logout = () => {
+    setUser(null);                         // göm logout-knappen direkt
+    localStorage.removeItem("username");   // städa
+    localStorage.removeItem("token");      
+  };
+ 
+  
   return (
     <BrowserRouter>
       <Background />
-      <Navbar />
+      <Navbar user={user} logout={logout} />
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login login={login} />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
