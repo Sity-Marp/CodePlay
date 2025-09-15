@@ -8,8 +8,12 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
+
+import Levels from "./pages/Levels";
+
 import Profile from "./pages/Profile";
 import Fakta from "./pages/Fakta";
+
 
 import "./App.css";
 
@@ -25,8 +29,12 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
+        <Route path="levels" element={<Levels />} />
+
         <Route path="/profile" element={<Profile />} />
         <Route path="/fakta" element={<Fakta />} />
+
       </Routes>
 
       <Footer />

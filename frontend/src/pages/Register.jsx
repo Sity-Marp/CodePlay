@@ -62,7 +62,7 @@ export default function Register() {
             required
           />
 
-          <button type="submit">Registrera</button>
+          <button type="submit" className="btn-register">Registrera</button>
         </form>
 
         {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
