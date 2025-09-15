@@ -10,7 +10,7 @@ export default function Levels() {
             <div className="planet html-planet">
                 <p className="name-planet"> HTML </p>
 
-                <Link to="/html" className="btn-html">
+                <Link to="/fakta" className="btn-html">
                 <img src="/images/html.png" alt="HTML icon" className="planet-icon"/>
             </Link>
 
