@@ -25,9 +25,6 @@ export default function Dashboard() {
 
             Starta
           </Link>
-          {/* TODO/PLACEHOLDER:
-              Byt "/level-1" till den riktiga rutten när första nivån finns,
-              t.ex. "/levels/html/1". */}
         </div>
 
         {/* Höger: astronaut */}
