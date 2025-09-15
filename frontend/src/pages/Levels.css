@@ -14,46 +14,44 @@
 }
 
 .name-planet{
-    font-size: clamp(14px, 1.6vw, 20px);
+    font-size: 20px;
     color: #ECE5E5;
     font-weight: 600;
     margin: 5px 0 8px;
 }
 
 .planet-icon{
-    width: clam(110px, 12vw, 150px);
+    width: 180px;
     border-radius: 50%;
 }
 
 .html-planet{
-    top: clamp(8%, 11vh, 14%);
-    left: clamp(10%, 15vw, 10%);
+    top: 14%;
+    left: 10%;
 }
 
 .css-planet{
-    top: clamp(25%, 30vh, 35%);
-    left: clamp(25%, 32vw, 30%);
+    top: 35%;
+    left: 30%;
 }
 
 .javascript-planet{
-    top: clamp(38%, 62vh, 48%);
-    left: clamp(45%, 55vw, 58%);
+    top: 58%;
+    left: 49%;
     
 }
 
 .earth-planet{
-    top: clamp(68%, 75vh, 80%);
-    left: clamp(68%, 75vw, 82%);
+    top: 80%;
+    left: 82%;
 }
 
 .levels-astro{
     position: absolute;
-    top: clamp(20%, 18vh, 15%);
-    left: 23%;
-    width: clamp(18px, 22vw, 160px); 
-    
+    top: 18%;
+    left: 15%;
+    width: 130px;
 }
-
 
 .levels-cb{
     position: absolute;

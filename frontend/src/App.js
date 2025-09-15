@@ -12,6 +12,7 @@ import Levels from "./pages/Levels";
 import Profile from "./pages/Profile";
 import Fakta from "./pages/Fakta";
 import Quiz from "./pages/Quiz";
+import Results from "./pages/Results";  
 
 
 import "./App.css";
@@ -51,6 +52,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/fakta" element={<Fakta />} />
         <Route path="/quiz" element={<Quiz />} />
+        <Route path="/results" element={<Results />} />
       </Routes>
 
       <Footer />

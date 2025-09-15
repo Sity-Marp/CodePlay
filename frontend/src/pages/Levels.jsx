@@ -22,7 +22,7 @@ export default function Levels() {
                 <Link to="/css" className="btn-css">
                 <img src="/images/css.png" alt="CSS icon" className="planet-icon"/>
             </Link>
-
+  
             </div>
 
             <div className="planet javascript-planet">
