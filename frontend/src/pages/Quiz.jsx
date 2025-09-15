@@ -40,7 +40,7 @@ export default function Quiz() {
         {/* FRÅGETEXT */}
         <h2 className="quiz-question">{current.question}</h2>
 
-        {/* SVARSALTERNATIV (radio) */}
+        {/* SVARSALTERNATIV */}
         <form
           className="quiz-form"
           onSubmit={(e) => {
@@ -76,7 +76,7 @@ export default function Quiz() {
             </button>
           </div>
 
-          {/* Liten länk för att lämna quizet (valfritt) */}
+          {/* Liten länk för att lämna quizet */}
           <div className="quiz-aux">
             <Link to="/fakta?level=1">Tillbaka till nivåer</Link>
           </div>
@@ -109,7 +109,7 @@ function trackFromLevel(level) {
 }
 
 function getDummyQuestions(level) {
-  // Fem frågor per level 
+  // Fem frågor per level
   const tag =
     level === 2
       ? "(CSS)"
