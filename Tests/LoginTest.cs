@@ -14,8 +14,8 @@ namespace Tests
             await Page.EvaluateAsync("localStorage.clear()");
             await Context.ClearCookiesAsync();
 
-            await Page.FillAsync("input[type='text']", "Testman");
-            await Page.FillAsync("input[type='password']", "Testman12!");
+            await Page.FillAsync("input[type='text']", "testuser");
+            await Page.FillAsync("input[type='password']", "testpassword");
 
             await Page.ClickAsync("button:has-text('Logga in')");
 
