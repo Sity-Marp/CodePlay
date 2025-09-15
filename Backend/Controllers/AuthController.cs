@@ -49,7 +49,7 @@ namespace Backend.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully", userId = newUser.Id });
+            return Ok(new { message = "User registered successfully" });
         }
 
         private string ValidateInput(string username, string email, string password)
