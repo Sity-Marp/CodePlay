@@ -3,6 +3,7 @@
   top: 0;
   z-index: 1000; /* ligger över allt innehåll */
   background: #c3ebff;
+  padding: 8px clamp(15px, 2vw, 35px);
 }
 
 .navbar-inner {
@@ -16,4 +17,15 @@
   height: 80px;
   width: auto; 
   display: block;
+}
+.navbar-logout{
+   margin-left: auto;      
+  background: #1e3a8a;    
+  color: #fff;           
+  border: none;           
+  padding: 8px 14px;      
+  border-radius: 8px;     
+  font-weight: 600;        
+  cursor: pointer;         
+  transition: transform 0.1s ease, filter 0.15s ease;
 }
