@@ -1,0 +1,177 @@
+.fakta {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: start center;
+  padding: 24px 16px;
+}
+
+/* Kort */
+.fakta-card {
+  background: #c3ebffcc;
+  border-radius: 15px;
+  width: clamp(220px, 80vw, 80rem);
+  height: 40rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: saturate(1.05);
+  margin: 32px 0 16px;
+  padding: clamp(20px, 4vw, 32px);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto; /* titel / innehåll / knapp */
+  gap: clamp(12px, 2vw, 20px);
+  position: relative;
+}
+
+/* Titel */
+.fakta-title {
+  margin: 0 0 12px;
+  color: #4368e4;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  font-size: clamp(22px, 10vw, 60px);
+  text-align: center;
+  text-shadow: 0 0 6px rgba(67, 104, 228, 0.35),
+               0 0 12px rgba(67, 104, 228, 0.25);
+}
+
+/* Fakta-lista (vänsterkolumn på desktop) */
+.fakta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 70ch;
+  justify-self: center; /* centrerad i mobilläge */
+}
+
+/* En rad: dekor-prick + två textrader */
+.fakta-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 2px;
+  margin: 12px 0;
+}
+
+.fakta-dot {
+  width: 14px;
+  height: 14px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #4368e4;
+}
+
+.fakta-item-title {
+  margin: 0;
+  color: #153753;
+  font-weight: 700;
+  font-size: clamp(14px, 2.5vw, 18px);
+  line-height: 1.45;
+}
+
+.fakta-item-sub {
+  grid-column: 2;
+  margin: 0;
+  color: #244f6a;
+  opacity: 0.9;
+  font-size: clamp(13px, 2.2vw, 16px);
+  line-height: 1.45;
+}
+
+/* Höger dekor */
+.fakta-right {
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  margin-top: clamp(6px, 2vw, 12px);
+}
+
+.fakta-astro {
+  width: clamp(120px, 24vw, 220px);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
+  user-select: none;
+}
+
+/* Enkel pratbubbla */
+.fakta-speech {
+  font-weight: 700;
+  text-align: center;
+  background: #ffffff;
+  border: 2px solid #123;
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+
+.fakta-speech::before {
+  content: "";
+  position: relative;
+  display: inline-block;
+  left: -4px;
+  top: 26px;
+  width: 0; height: 0;
+  border: 8px solid transparent;
+  border-top-color: #ffffff;
+  transform: translateY(2px);
+}
+
+/* Nästa-knapp (högerkant längst ned) */
+.fakta-next {
+  display: grid;
+  justify-content: end;
+  align-items: end;
+}
+
+.fakta-btn-next {
+  display: inline-block;
+  text-decoration: none;
+  background: #4368e4;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.fakta-btn-next:hover,
+.fakta-btn-next:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 28px rgba(67, 104, 228, 0.42);
+}
+
+/* ===================== Desktop ===================== */
+@media (min-width: 900px) {
+  .fakta-card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .fakta-title {
+    grid-column: 1 / -1; /* rubrik över båda kolumnerna */
+    text-align: left;
+    padding-left: 6px;
+  }
+
+  .fakta-list {
+    grid-column: 1 / 2;   /* vänster kolumn */
+    justify-self: start;
+  }
+
+  .fakta-right {
+    grid-column: 2 / 3;   /* höger kolumn */
+    align-self: center;
+    justify-self: end;
+    transform: translateX(-8px);
+  }
+
+  .fakta-next {
+    grid-column: 1 / -1;  /* knappen längst ner över hela bredden */
+  }
+}
