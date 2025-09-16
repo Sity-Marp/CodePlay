@@ -15,6 +15,7 @@ namespace Backend.Data
         public DbSet<Quiz> Quizzes { get; set; }             
         public DbSet<Question> Questions { get; set; }        
         public DbSet<AnswerOption> AnswerOptions { get; set; }
+        public DbSet<QuizAttempt> QuizAttempts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -155,6 +156,50 @@ namespace Backend.Data
                 entity.HasIndex(o => o.QuestionId);
                 
             });
+            // ===== QuizAttempt =====
+            modelBuilder.Entity<QuizAttempt>(entity =>
+            {
+                entity.HasKey(a => a.Id);
+
+                entity.Property(a => a.PlayedAt)
+                      .IsRequired()
+                      .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.Property(a => a.Track)
+                      .IsRequired();
+
+                entity.Property(a => a.LevelNumber)
+                      .IsRequired();
+
+                // Relation till User
+                entity.HasOne(a => a.User)
+                      .WithMany()
+                      .HasForeignKey(a => a.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Relation till Quiz
+                entity.HasOne(a => a.Quiz)
+                      .WithMany()
+                      .HasForeignKey(a => a.QuizId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Index för snabbare queries
+                entity.HasIndex(a => new { a.UserId, a.PlayedAt });
+                entity.HasIndex(a => new { a.Track, a.LevelNumber, a.PlayedAt });
+            });
+
+            // ===== UserAnswer -> QuizAttempt (1:N) =====
+            modelBuilder.Entity<UserAnswer>()
+                .HasOne(ua => ua.QuizAttempt)
+                .WithMany(a => a.Answers)
+                .HasForeignKey(ua => ua.QuizAttemptId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
+
+
+
             //seed data from DataSeeder.cs
             DataSeeder.SeedData(modelBuilder);
         }

@@ -11,6 +11,9 @@
         public int AnswerOptionId { get; set; } //Foreign key to AnswerOption
         public DateTime AnsweredAt { get; set; } = DateTime.UtcNow;
 
+        public int QuizAttemptId { get; set; }               // FK till QuizAttempt
+        public QuizAttempt QuizAttempt { get; set; }         // navigation
+
         public User User { get; set; } //Navigation property to User
     }
 }
