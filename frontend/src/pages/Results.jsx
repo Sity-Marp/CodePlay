@@ -1,10 +1,22 @@
-
+import { useState, useEffect } from "react";
 import "./Results.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 export default function Results() {
 
+    const {state} = useLocation();
+    const navigate = useNavigate();
+
+    const quizId = state?.quizId;
+    const answers = state?.answers;
+
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
  
+
   return (
     <main className="results-page">
         <section className="results-card" role="region" aria-label="Resultat">
@@ -25,4 +37,7 @@ export default function Results() {
         
     </main>
     );
+    
+
+
 }

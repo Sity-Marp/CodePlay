@@ -11,7 +11,7 @@ export default function Levels() {
                 <p className="name-planet"> HTML </p>
 
                 <Link to="/fakta" className="btn-html">
-                <img src="/images/html.png" alt="HTML icon" className="planet-icon"/>
+                <img src="/images/html.png" alt="HTML icon" className="planet-icon" draggable="false"/>
             </Link>
 
             </div>
@@ -20,7 +20,7 @@ export default function Levels() {
                 <p className="name-planet"> CSS </p>
 
                 <Link to="/css" className="btn-css" aria-disabled="true">
-                <img src="/images/css.png" alt="CSS icon" className="planet-icon"/>
+                <img src="/images/css.png" alt="CSS icon" className="planet-icon" draggable="false"/>
             </Link>
   
             </div>
@@ -29,7 +29,7 @@ export default function Levels() {
                 <p className="name-planet"> JAVASCRIPT </p>
 
                 <Link to="/javascript" className="btn-javascript" aria-disabled="true">
-                <img src="/images/javascript.png" alt="JavaScript icon" className="planet-icon"/>
+                <img src="/images/javascript.png" alt="JavaScript icon" className="planet-icon" draggable="false"/>
             </Link> 
 
             </div>
@@ -38,7 +38,7 @@ export default function Levels() {
                 <p className="name-planet"> HTML, CSS & <br/> JavaScript  </p>
 
                 <Link to="/earth" className="btn-earth" aria-disabled="true">
-                <img src="/images/html-css-javascript.png" alt="Earth icon" className="planet-icon"/> 
+                <img src="/images/html-css-javascript.png" alt="Earth icon" className="planet-icon" draggable="false"/> 
             </Link>
             </div>
 
@@ -46,7 +46,7 @@ export default function Levels() {
            
                 <img src="/images/player.png" alt="Astronaut" className="levels-astro" draggable="false" />
                 <img src="images/cb-levels.png" alt="chatbubble" className="levels-cb" draggable="false" />
-                <img src="images/rocket.png" alt="rocket" className="levels-rocket"  />    
+                <img src="images/rocket.png" alt="rocket" className="levels-rocket" draggable="false" />    
             
         </div>
                 
