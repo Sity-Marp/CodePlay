@@ -4,6 +4,9 @@ using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,12 +18,16 @@ namespace Backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IConfiguration _config;
         //Regex för typiska grejer när man skapar konto.. tror inte det är något fel. 
         private static readonly Regex EmailRegex = new(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
         private static readonly Regex UsernameRegex = new(@"^[a-zA-Z0-9_]{3,20}$");
         private static readonly Regex PasswordRegex = new(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
 
-        public AuthController(AppDbContext context) => _context = context;
+        public AuthController(AppDbContext context, IConfiguration config)
+          { _context = context;
+            _config = config; }
+           
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -95,13 +102,29 @@ namespace Backend.Controllers
             }
 
 
+            var claims = new[]
+            {
+    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+    new Claim(ClaimTypes.Name, user.Username),
+    new Claim(ClaimTypes.Email, user.Email)
+};
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var jwt = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: creds
+            );
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
             return Ok(new
             {
                 message = "Login ok",
+                token,             // <— VIKTIG
                 userId = user.Id,
                 username = user.Username,
                 email = user.Email
-
             });
         }
 

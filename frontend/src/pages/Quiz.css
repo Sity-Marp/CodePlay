@@ -119,6 +119,14 @@
   font-size: 14px;
 }
 
+.quiz-option.correct {
+  background-color: rgba(0, 200, 0, 0.2);
+}
+
+.quiz-option.incorrect {
+  background-color: rgba(200, 0, 0, 0.2);
+}
+
 /* Skärmläsare-only */
 .sr-only {
   position: absolute !important;
