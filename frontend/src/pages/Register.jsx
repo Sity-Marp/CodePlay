@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState} from "react";
 import "./Register.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -21,12 +24,13 @@ export default function Register() {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("Registrering lyckades! UserId: " + data.userId);
+        // setMessage("Registrering lyckades!");
         setUsername("");
         setEmail("");
         setPassword("");
+       navigate("/login");
       } else {
-        setMessage("Fel: " + data.message);
+        setMessage("Fel: " + (data.message || "Registrering misslyckades."));
       }
     } catch (err) {
       setMessage("Fel vid anslutning till backend: " + err.message);
