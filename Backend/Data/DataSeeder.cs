@@ -13,16 +13,16 @@ namespace Backend.Data
             var quizzes = new[]
             {
                 // HTML Track
-                new Quiz { Id = 1, Title = "HTML Grundläggande", Track = TrackType.Html, LevelNumber = 1, PassingScore = 5 },
+                new Quiz { Id = 1, Title = "HTML Grundläggande", Track = TrackType.Html, LevelNumber = 1, PassingScore = 4 },
                 
                 // CSS Track
-                new Quiz { Id = 2, Title = "CSS Grundläggande", Track = TrackType.Css, LevelNumber = 2, PassingScore = 10 },
+                new Quiz { Id = 2, Title = "CSS Grundläggande", Track = TrackType.Css, LevelNumber = 2, PassingScore = 4 },
                 
                 // JavaScript Track
-                new Quiz { Id = 3, Title = "JavaScript Grundläggande", Track = TrackType.JavaScript, LevelNumber = 3, PassingScore = 15 },
+                new Quiz { Id = 3, Title = "JavaScript Grundläggande", Track = TrackType.JavaScript, LevelNumber = 3, PassingScore = 4},
 
                 // LastTrack
-                new Quiz { Id = 4, Title = "Kombinerad Grundläggande", Track = TrackType.LastTrack, LevelNumber = 4, PassingScore = 20}
+                new Quiz { Id = 4, Title = "Kombinerad Grundläggande", Track = TrackType.LastTrack, LevelNumber = 4, PassingScore = 4}
             };
 
             modelBuilder.Entity<Quiz>().HasData(quizzes);

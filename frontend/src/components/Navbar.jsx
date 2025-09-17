@@ -1,24 +1,32 @@
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
+// Syns på alla sidor
+export default function Navbar({ user, logout }) {
+  const navigate = useNavigate();
 
-//syns på alla sidor
-export default function Navbar({user,logout}) {
-   const navigate = useNavigate();
+  // Robust: betrakta som inloggad om vi har user eller en JWT i localStorage
+  const isAuthed = !!user || !!localStorage.getItem("token");
 
-  // När man klickar på logga ut:
   const handleLogout = () => {
-    logout();          
-    navigate("/");    
+    logout?.();
+    navigate("/");
   };
+
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <Link to="/" className="navbar-logo">
+        {/* <-- Ändringen: dynamisk länk beroende på inloggning */}
+        <Link
+          to={isAuthed ? "/dashboard" : "/"}
+          className="navbar-logo"
+          aria-label="CodePlay – gå till startsida"
+          title={isAuthed ? "Till Dashboard" : "Till startsidan"}
+        >
           <img src="/images/logo.png" alt="CodePlay logga" />
         </Link>
 
-        {user && (
+        {isAuthed && (
           <button onClick={handleLogout} className="navbar-logout">
             Logga ut
           </button>

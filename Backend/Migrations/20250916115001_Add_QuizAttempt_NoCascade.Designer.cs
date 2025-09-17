@@ -4,6 +4,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250916115001_Add_QuizAttempt_NoCascade")]
+    partial class Add_QuizAttempt_NoCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -817,7 +820,7 @@ namespace Backend.Migrations
                         {
                             Id = 1,
                             LevelNumber = 1,
-                            PassingScore = 4,
+                            PassingScore = 5,
                             Title = "HTML Grundläggande",
                             Track = 1
                         },
@@ -825,7 +828,7 @@ namespace Backend.Migrations
                         {
                             Id = 2,
                             LevelNumber = 2,
-                            PassingScore = 4,
+                            PassingScore = 10,
                             Title = "CSS Grundläggande",
                             Track = 2
                         },
@@ -833,7 +836,7 @@ namespace Backend.Migrations
                         {
                             Id = 3,
                             LevelNumber = 3,
-                            PassingScore = 4,
+                            PassingScore = 15,
                             Title = "JavaScript Grundläggande",
                             Track = 3
                         },
@@ -841,7 +844,7 @@ namespace Backend.Migrations
                         {
                             Id = 4,
                             LevelNumber = 4,
-                            PassingScore = 4,
+                            PassingScore = 20,
                             Title = "Kombinerad Grundläggande",
                             Track = 4
                         });

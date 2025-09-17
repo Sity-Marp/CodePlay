@@ -1,10 +1,13 @@
 ﻿
 
-using Backend.Data;
-using Backend.DTOs;
-using Backend.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Backend.Data;              // <-- AppDbContext
+using Backend.DTOs;              // <-- SubmitAnswersDto, AnswerSubmissionDto, SubmitResult
+using Backend.Models;            // <-- Quiz, Question, AnswerOption, UserAnswer, QuizAttempt, UserProgress
 using Microsoft.EntityFrameworkCore;
-
 
 namespace Backend.Services
 {
@@ -12,6 +15,7 @@ namespace Backend.Services
     {
         private readonly AppDbContext _db;
 
+        // DI: DbContext injiceras
         public PlayService(AppDbContext db)
         {
             _db = db;
@@ -19,60 +23,74 @@ namespace Backend.Services
 
         public async Task<SubmitResult> SubmitAsync(int userId, SubmitAnswersDto dto)
         {
-            // 1) Ladda quiz inkl. frågor + svarsalternativ
+            // ========== 1) Hämta quiz + frågor + svarsalternativ ==========
             var quiz = await _db.Quizzes
                 .Include(q => q.Questions)
                     .ThenInclude(q => q.AnswerOptions)
                 .FirstOrDefaultAsync(q => q.Id == dto.QuizId);
 
             if (quiz == null)
-                throw new Exception("Quiz hittades inte.");
+                throw new InvalidOperationException("Quiz hittades inte.");
 
+            if (dto.Answers == null || dto.Answers.Count == 0)
+                throw new InvalidOperationException("Inga svar skickades in.");
+
+            // ========== 2) Skapa en QuizAttempt (sammanfattning av hela rundan) ==========
+            var attempt = new QuizAttempt
+            {
+                UserId = userId,
+                QuizId = quiz.Id,
+                Track = quiz.Track,            // enum TrackType
+                LevelNumber = quiz.LevelNumber,      // t.ex. 1, 2, 3 ...
+                PlayedAt = DateTime.UtcNow
+            };
+            _db.QuizAttempts.Add(attempt);
+
+            // ========== 3) Rätta svaren och spara UserAnswers kopplade till attemptet ==========
             int correct = 0;
             int incorrect = 0;
             var incorrectQuestionIds = new List<int>();
 
-            // 2) Rätta varje inskickat svar + spara i UserAnswers
-            foreach (var ans in dto.Answers)
+            foreach (var ans in dto.Answers) // ans = AnswerSubmissionDto (QuestionId, AnswerOptionId)
             {
-                // 2.1 Hitta frågan (med samma Id som frontend skickade)
+                // 3.1 Hitta frågan i detta quiz
                 var question = quiz.Questions.FirstOrDefault(q => q.Id == ans.QuestionId);
                 if (question == null)
-                    continue; // om frontend råkar skicka skräp, hoppa över (påverkar inte resten)
+                    continue; // defensivt – ignorera ev. skräp
 
-                // 2.2 Hitta valt alternativ via ID (robustare än text)
-                var selectedOption = question.AnswerOptions.FirstOrDefault(o => o.Id == ans.AnswerOptionId);
-                if (selectedOption == null)
-                    throw new Exception($"Ogiltigt alternativ för fråga {question.Id}.");
+                // 3.2 Hitta valt alternativ
+                var option = question.AnswerOptions.FirstOrDefault(o => o.Id == ans.AnswerOptionId);
+                if (option == null)
+                    throw new InvalidOperationException($"Ogiltigt alternativ för fråga {question.Id}.");
 
-                // 2.3 Är detta alternativet rätt?
-                var isCorrect = selectedOption.IsCorrect;
-
-                if (isCorrect)
-                {
-                    correct++;
-                }
+                var isCorrect = option.IsCorrect;
+                if (isCorrect) correct++;
                 else
                 {
                     incorrect++;
                     incorrectQuestionIds.Add(question.Id);
                 }
-                // Spara userens svar
+
+                // 3.3 Spara rad-för-rad och koppla till attemptet
                 _db.UserAnswers.Add(new UserAnswer
                 {
                     UserId = userId,
                     QuestionId = question.Id,
-                    AnswerOptionId= selectedOption.Id,
+                    AnswerOptionId = option.Id,
+                    SelectedOption = option.Text,         // spara texten – robust om alternativen ändras senare
                     IsCorrect = isCorrect,
+                    QuizAttempt = attempt              // FK sätts via navigation -> QuizAttemptId
                     
-                    SelectedOption = selectedOption.Text
-
                 });
             }
 
-            await _db.SaveChangesAsync();
+            // ========== 4) Fyll attempt-summeringen ==========
+            attempt.TotalQuestions = correct + incorrect;
+            attempt.CorrectCount = correct;
+            attempt.WrongCount = incorrect;
+            attempt.Passed = correct >= quiz.PassingScore;   // godkänt enligt quizets gräns
 
-            // 3) Uppdatera/Skapa UserProgress för quizets Track
+            // ========== 5) Uppdatera UserProgress för denna track ==========
             var progress = await _db.UserProgresses
                 .FirstOrDefaultAsync(p => p.UserId == userId && p.Track == quiz.Track);
 
@@ -92,42 +110,37 @@ namespace Backend.Services
                 _db.UserProgresses.Add(progress);
             }
 
-            // Enkel poängstrategi
+            // 5.1 Räkna upp totals (enkel poäng: 1 poäng per rätt)
             progress.TotalCorrect += correct;
             progress.TotalIncorrect += incorrect;
             progress.TotalPoints += correct;
             progress.LastUpdated = DateTime.UtcNow;
 
-            // Klarade användaren quizet?
-            bool passed = correct >= quiz.PassingScore;
-
-            // Lås upp nästa nivå vid pass
-            if (passed && quiz.LevelNumber >= progress.HighestUnlockedLevel)
+            // 5.2 Lås upp nästa nivå om attemptet blev godkänt
+            if (attempt.Passed && quiz.LevelNumber >= progress.HighestUnlockedLevel)
             {
                 progress.HighestUnlockedLevel = quiz.LevelNumber + 1;
-                progress.CurrentLevel = Math.Max(progress.CurrentLevel, progress.HighestUnlockedLevel);
+
+                // Flytta fram CurrentLevel om vi nu låst upp längre än var vi står
+                if (progress.CurrentLevel < progress.HighestUnlockedLevel)
+                    progress.CurrentLevel = progress.HighestUnlockedLevel;
             }
 
+            // ========== 6) Spara ALLT ==========
             await _db.SaveChangesAsync();
 
+            // ========== 7) Returnera ett resultatpaket till frontend ==========
             return new SubmitResult
             {
+                AttemptId = attempt.Id,
                 Correct = correct,
                 Incorrect = incorrect,
-                Passed = passed,
-                NextLevelUnlocked = passed ? progress.HighestUnlockedLevel : (int?)null,
-                IncorrectQuestionIds = incorrectQuestionIds
+                Passed = attempt.Passed,
+                NextLevelUnlocked = attempt.Passed ? progress.HighestUnlockedLevel : (int?)null,
+                IncorrectQuestionIds = incorrectQuestionIds,
+                QuizTitle = quiz.Title,
+                LevelNumber = quiz.LevelNumber
             };
         }
-    }
-
-    // Svarspaket till frontend
-    public class SubmitResult
-    {
-        public int Correct { get; set; }
-        public int Incorrect { get; set; }
-        public bool Passed { get; set; }
-        public int? NextLevelUnlocked { get; set; }
-        public List<int> IncorrectQuestionIds { get; set; } = new();
     }
 }
