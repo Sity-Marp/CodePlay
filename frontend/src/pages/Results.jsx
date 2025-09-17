@@ -25,12 +25,18 @@ export default function Results() {
   const total = data.totalQuestions || 0;
   const correct = data.submitResult?.correct ?? 0;
   const incorrect = data.submitResult?.incorrect ?? 0;
-  const passed = !!data.submitResult?.passed;
+  //const passed = !!data.submitResult?.passed;
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  const goRetry = () => navigate(`/quiz?level=${level}&q=1`);
-  const goNext = () => navigate(`/fakta?level=${level + 1}`);
+  const passed = data.submitResult?.passed ?? (percent >= 80);
+  //Navigering-skickar alltid med track
+  // const goRetry = () => navigate(`/quiz?level=${level}&q=1`);
+  // const goNext = () => navigate(`/fakta?level=${level + 1}`);
+const goRetry = () =>
+    navigate(`/quiz?level=${level}&q=1&track=${trackKey}`);
 
+  const goNext = () =>
+    navigate(`/fakta?level=${level + 1}&track=${trackKey}`);
   return (
     <main className="results-page">
       <section className="results-card" role="region" aria-label="Resultat">
