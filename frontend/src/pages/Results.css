@@ -1,0 +1,78 @@
+/* Sidan */
+.results-page{
+    min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: start center;
+  padding: 24px 16px;
+}
+
+/* Resultat kortet */
+.results-card{
+background: #c3ebffcc;
+  border-radius: 15px;
+  width: clamp(220px,
+    80vw,
+    80rem);
+  height: 40rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  backdrop-filter: saturate(1.05);
+  margin: 32px 0 16px;
+  padding: clamp(20px, 4vw, 32px);
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;  /* topp / mitten / botten i mobilläge */
+  grid-template-columns: 1fr;         /* en kolumn i mobilläge */
+  gap: clamp(12px, 2vw, 20px);
+  position: relative;
+  text-align: center;
+}
+
+/* Astronaut */
+.results-astro {
+  position: absolute;
+  width: clamp(120px, 24vw, 220px);
+  top: clamp(450px, 4vw, 2px);
+  right: clamp(330px, 4vw, 25px);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28));
+  user-select: none;
+}
+
+.back-link{
+  display: block;
+  margin: 0 auto;
+  text-decoration: none;
+  background: #4368e4;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 22px rgba(67, 104, 228, 0.35);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  width: 200px;
+}
+    
+.result-bubble{
+  position: absolute;
+  top: 40%;
+  left: 70%;
+  font-weight: 700;
+  text-align: center;
+  background: #ffffff;
+  border: 2px solid #123;
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+  max-width: clamp(220px, 50vw, 420px);
+  
+}
+    
+.results-card h2{
+  font-size: clamp(70px, 10vw, 60px);
+  font-weight: 800;
+  color: #4368e4;
+  letter-spacing: 0.12em;
+}
+
+

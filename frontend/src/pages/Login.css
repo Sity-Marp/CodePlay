@@ -1,7 +1,7 @@
 .login-card{
     width: 400px;
     height: 500px;
-    background-color: #C3EBFF;
+    background-color: #c3ebffcc;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -17,6 +17,7 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 50px;
+   
 }
 
 .login-form input{
@@ -37,24 +38,26 @@
 
 }
 
-.login-form button{
+.btn-login{
     width: 150px;
     height: 40px;
     border-radius: 5px;
-    border: none;
     background-color: #007BFF;
     color: white;
-    font-size: 16px;
-    cursor: pointer;
+    border: none;
+    font-size: 18px;
     margin-top: 20px;
-    
+    text-decoration: none;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+   
+  
 }
 
-.login-form button:hover{
-    background-color: #0056b3;
-}
 
-.login-form p{
+.btn-reset-password {
     color: blue;
     font-size: 15px;
     text-decoration: underline;

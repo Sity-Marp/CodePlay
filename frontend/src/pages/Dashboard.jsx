@@ -20,12 +20,11 @@ export default function Dashboard() {
 
         {/* Primär-CTA precis under introt */}
         <div className="db-cta">
-          <Link to="/level-1" className="btn btn-start">
+
+          <Link to="/levels" className="btn btn-start">
+
             Starta
           </Link>
-          {/* TODO/PLACEHOLDER:
-              Byt "/level-1" till den riktiga rutten när första nivån finns,
-              t.ex. "/levels/html/1". */}
         </div>
 
         {/* Höger: astronaut */}
@@ -38,7 +37,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Nederst: runda ikon-knappar */}
+        {/* Nederst:  ikon-knappar */}
         <nav className="db-actions" aria-label="Snabblänkar">
           <Link
             to="/profile"

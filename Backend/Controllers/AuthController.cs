@@ -1,5 +1,7 @@
 using Backend.Data;
+using Backend.DTOs;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -47,7 +49,7 @@ namespace Backend.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully", userId = newUser.Id });
+            return Ok(new { message = "User registered successfully" });
         }
 
         private string ValidateInput(string username, string email, string password)
@@ -66,6 +68,87 @@ namespace Backend.Controllers
             using var sha256 = SHA256.Create();
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        {
+            // Minsta krav: minst ett av Username/Email + Password
+            if ((string.IsNullOrWhiteSpace(dto.Username) && string.IsNullOrWhiteSpace(dto.Email)) ||
+                string.IsNullOrWhiteSpace(dto.Password))
+            {
+                return BadRequest(new { message = "Username/Email är inte giltiga" });
+            }
+
+            // Hitta användare via username ELLER email
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                (!string.IsNullOrWhiteSpace(dto.Username) && u.Username == dto.Username) ||
+                (!string.IsNullOrWhiteSpace(dto.Email) && u.Email == dto.Email));
+
+            // Verifiera lösenord (samma hash som vid registrering)
+            var hashed = HashPassword(dto.Password);
+            if (user == null || user.PasswordHash != hashed)
+            {
+
+                return Unauthorized(new { message = "Ogiltigta värden" });
+            }
+
+
+            return Ok(new
+            {
+                message = "Login ok",
+                userId = user.Id,
+                username = user.Username,
+                email = user.Email
+
+            });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            // Validering av input
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.NewPassword))
+                return BadRequest(new { message = "Skriv in email/användarnamn och lösenord" });
+
+            // Validera lösenord matchar confirmPassword
+            if (request.NewPassword != request.ConfirmPassword)
+                return BadRequest(new { message = "Lösenorden matchar inte" });
+
+            // Validera nya lösenordet
+            var passwordValidation = ValidateNewPassword(request.NewPassword);
+            if (passwordValidation != null)
+                return BadRequest(new { message = passwordValidation });
+
+            // Kolla om input är email eller användarnamn
+            bool isEmail = EmailRegex.IsMatch(request.Email);
+            bool isUsername = UsernameRegex.IsMatch(request.Email);
+
+            if (!isEmail && !isUsername)
+                return BadRequest(new { message = "Ange ett korrekt email eller användarnamn" });
+
+            // Hitta användaren via email eller username
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
+                (isEmail && u.Email == request.Email) ||
+                (isUsername && u.Username == request.Email));
+
+            if (user == null)
+                return BadRequest(new { message = "Ingen användare hittades med den angivna informationen" });
+
+            // Uppdatera lösenord
+            user.PasswordHash = HashPassword(request.NewPassword);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Lösenordet har uppdaterats" });
+        }
+
+        // Hjälpmetod för att validera lösenordets styrka
+        private string ValidateNewPassword(string password)
+        {
+            return password.Length < 8 || password.Length > 24 ? "Lösenordet måste vara mellan 8-24 karaktärer" :
+                !PasswordRegex.IsMatch(password) ? "Lösenordet ska innehålla: stora och små bokstäver, minst en siffra samt ett specialtecken." :
+                null;
         }
     }
 }

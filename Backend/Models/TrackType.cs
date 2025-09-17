@@ -4,7 +4,7 @@
     {
         Html =1,
         Css=2,
-        JavaSript=3,
+        JavaScript=3,
         LastTrack= 4
     }
 }

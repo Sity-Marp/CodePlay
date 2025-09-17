@@ -4,6 +4,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250912141910_SeedQuizData")]
+    partial class SeedQuizData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -824,7 +827,7 @@ namespace Backend.Migrations
                         new
                         {
                             Id = 2,
-                            LevelNumber = 2,
+                            LevelNumber = 1,
                             PassingScore = 10,
                             Title = "CSS Grundläggande",
                             Track = 2
@@ -832,7 +835,7 @@ namespace Backend.Migrations
                         new
                         {
                             Id = 3,
-                            LevelNumber = 3,
+                            LevelNumber = 1,
                             PassingScore = 15,
                             Title = "JavaScript Grundläggande",
                             Track = 3
@@ -840,7 +843,7 @@ namespace Backend.Migrations
                         new
                         {
                             Id = 4,
-                            LevelNumber = 4,
+                            LevelNumber = 1,
                             PassingScore = 20,
                             Title = "Kombinerad Grundläggande",
                             Track = 4
