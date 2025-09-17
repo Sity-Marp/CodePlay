@@ -32,11 +32,6 @@ export default function Profile() {
             <img src="/images/html-css-javascript.png" alt="Nivå 4" />
           </Link>
         </div>
-
-        {/* Ändra-knappen */}
-        <div className="profile-actions">
-          <button className="btn btn-edit">Ändra</button>
-        </div>
       </section>
     </main>
   );

@@ -89,6 +89,8 @@ export default function Quiz() {
   const [feedback, setFeedback] = useState({});
   // { questionId: true } => låst efter första valet
   const [locked, setLocked] = useState({});
+  // spara quizId för submit
+  const [quizId, setQuizId] = useState(null);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -100,9 +102,10 @@ export default function Quiz() {
         const list = await resList.json();
         if (!list.length) throw new Error("Inget quiz hittades");
 
-        //Hämta själva quizet med frågor/svarsalternativ
-        const quizId = list[0].id;
-        const resQuiz = await fetch(`/api/quiz/${quizId}`);
+        // Hämta själva quizet med frågor/svarsalternativ
+        const qid = list[0].id;
+        setQuizId(qid);
+        const resQuiz = await fetch(`/api/quiz/${qid}`);
         const quiz = await resQuiz.json();
 
         // Plocka ut endast det UI:t behöver
@@ -176,7 +179,7 @@ export default function Quiz() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!chosen) {
       alert("Du måste välja ett alternativ!");
@@ -191,10 +194,77 @@ export default function Quiz() {
       totalQuestions: questions.length,
     });
 
-    if (q === questions.length) {
-      navigate(`/resultat?level=${level}&track=${trackKey}`);
-    } else {
+    // Inte sista frågan → gå vidare
+    if (q < questions.length) {
       gotoQ(q + 1);
+      return;
+    }
+
+    // Sista fråga: skicka inskick till backend
+    try {
+      if (!quizId) {
+        alert("Kunde inte identifiera quizet, prova igen.");
+        return;
+      }
+
+      const token =
+        localStorage.getItem("token") ||
+        localStorage.getItem("authToken") ||
+        sessionStorage.getItem("token") ||
+        (() => {
+          try {
+            return JSON.parse(localStorage.getItem("auth") || "{}").token;
+          } catch {
+            return null;
+          }
+        })();
+
+      const payload = {
+        QuizId: quizId,
+        Answers: Object.entries(answers).map(
+          ([questionId, answerOptionId]) => ({
+            QuestionId: Number(questionId),
+            AnswerOptionId: Number(answerOptionId),
+          })
+        ),
+      };
+
+      const res = await fetch(`/api/play/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.status === 401) {
+        alert(
+          "Din session har gått ut eller du är inte inloggad. Logga in igen."
+        );
+        navigate("/login");
+        return;
+      }
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt || "Inskick misslyckades");
+      }
+
+      const result = await res.json();
+
+      // spara backend-resultat för Result-sidan
+      saveSession(trackKey, level, {
+        answers,
+        feedback,
+        locked,
+        totalQuestions: questions.length,
+        submitResult: result,
+      });
+
+      navigate(`/results?level=${level}&track=${trackKey}`);
+    } catch (err) {
+      console.error(err);
+      alert("Kunde inte spara resultat: " + err.message);
     }
   };
 

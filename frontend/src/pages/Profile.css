@@ -67,25 +67,3 @@
   opacity: 0.5;
   filter: grayscale(100%);
 }
-
-/* === Ändra-knapp === */
-.profile-actions {
-  margin-top: auto;
-}
-
-.btn-edit {
-  background: #4368e4;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  border: none;
-  height: 35px;
-  width: clamp(0.02em, 30vw, 150px); 
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25); 
-}
-.btn-edit:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-}
