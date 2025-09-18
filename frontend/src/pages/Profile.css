@@ -42,11 +42,14 @@
 /* === Planeter (nivå-knappar) === */
 .profile-levels {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+
   gap: 45px;
   align-items: center;
   width: 100%;
   position: relative;
+
 }
 
 .planet img {
