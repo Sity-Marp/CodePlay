@@ -97,17 +97,16 @@ namespace Backend.Controllers
             var hashed = HashPassword(dto.Password);
             if (user == null || user.PasswordHash != hashed)
             {
-
                 return Unauthorized(new { message = "Ogiltigta värden" });
             }
 
-
             var claims = new[]
             {
-    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-    new Claim(ClaimTypes.Name, user.Username),
-    new Claim(ClaimTypes.Email, user.Email)
-};
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("id", user.Id.ToString()), // Lägg till "id" claim också
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -126,6 +125,54 @@ namespace Backend.Controllers
                 username = user.Username,
                 email = user.Email
             });
+        }
+
+        // Hämta användarens framsteg för planet upplåsning
+        [Authorize]
+        [HttpGet("progress")]
+        public async Task<IActionResult> GetUserProgress()
+        {
+            var userIdClaim = User.FindFirst("id") ?? User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+                return Unauthorized(new { message = "Ingen giltig user-id i token." });
+
+            try
+            {
+                var userProgress = await _context.UserProgresses
+                    .Where(up => up.UserId == userId)
+                    .Select(up => new
+                    {
+                        up.Track,
+                        up.CurrentLevel,
+                        up.HighestUnlockedLevel,
+                        up.TotalPoints,
+                        up.TotalCorrect,
+                        up.TotalIncorrect,
+                    })
+                    .ToListAsync();
+
+                if (!userProgress.Any())
+                {
+                    return Ok(new[]
+                    {
+                        new
+                        {
+                            Track = "Html",
+                            CurrentLevel = 1,
+                            HighestUnlockedLevel = 1,
+                            TotalPoints = 0,
+                            TotalCorrect = 0,
+                            TotalIncorrect = 0,
+                        }
+                    });
+                }
+
+                return Ok(userProgress);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Kunde inte hämta användarframsteg", error = ex.Message });
+            }
         }
 
         [HttpPost("reset-password")]
