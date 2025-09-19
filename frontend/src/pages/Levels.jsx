@@ -7,7 +7,7 @@ export default function Levels() {
         <div className="levels">
             
             <div className="levels-planet">
-            <div className="planet html-planet">
+            <div className="planetlvl html-planet">
                 <p className="name-planet"> HTML </p>
 
                 <Link to="/fakta" className="btn-html">
@@ -16,7 +16,7 @@ export default function Levels() {
 
             </div>
 
-            <div className="planet css-planet locked">
+            <div className="planetlvl css-planet locked">
                 <p className="name-planet"> CSS </p>
 
                 <Link to="/css" className="btn-css" aria-disabled="true">
@@ -25,7 +25,7 @@ export default function Levels() {
   
             </div>
 
-            <div className="planet javascript-planet locked">
+            <div className="planetlvl javascript-planet locked">
                 <p className="name-planet"> JAVASCRIPT </p>
 
                 <Link to="/javascript" className="btn-javascript" aria-disabled="true">
@@ -34,7 +34,7 @@ export default function Levels() {
 
             </div>
 
-            <div className="planet earth-planet locked">
+            <div className="planetlvl earth-planet locked">
                 <p className="name-planet"> HTML, CSS & <br/> JavaScript  </p>
 
                 <Link to="/earth" className="btn-earth" aria-disabled="true">
