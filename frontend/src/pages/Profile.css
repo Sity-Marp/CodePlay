@@ -42,7 +42,6 @@
 /* === Planeter (nivå-knappar) === */
 .profile-levels {
   display: flex;
-  flex-direction: column;
   justify-content: center;
 
   gap: 45px;
@@ -83,6 +82,7 @@
   scale: 0.5;
   z-index: 2;
 }
+
 
 .planet-line {
   position: absolute;
